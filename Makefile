@@ -9,7 +9,7 @@ PHONY: build upload clear
 
 build: build/$(SKETCH)
 
-build/$(SKETCH): $(SKETCH)/$(SKETCH).ino /c/Users/Funxb/Documents/Arduino/libraries/Segmentos/Segmentos.cpp
+build/$(SKETCH): $(SKETCH)/$(SKETCH).ino
 	$(ARDUINO_CLI) compile "$<" -b $(BOARD_TYPE) --build-path="$@" --build-cache-path="$@" --libraries "$(INCLUDE)"
 
 clear:
