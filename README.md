@@ -12,7 +12,7 @@
     * Para compilar, escribir en la linea de comandos:  
     `make compile`
     * Para subir el código al arduino escribir en la linea de comandos:  
-     `make upload`  
+    `make upload`  
   
     __NOTA 1__: Probablemente tendras que configurar el puerto conectado al arduino, en el archivo **Makefile** cambiar el valor de la variable SERIAL_PORT al que esté conectado a tu arduino  
 

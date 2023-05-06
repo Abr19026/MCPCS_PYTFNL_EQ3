@@ -4,7 +4,8 @@
 
 //#define EMULADOR_SENSOR_AZAR
 //#define EMULADOR_SENSOR_SERIAL
-#define SIMULAR_REAL
+#define RANDOM_INTERVAL
+//#define SIMULAR_REAL
 
 // Configuración para refresh de pantalla 7 segmentos
 #define PRESCALER1 1024
@@ -24,7 +25,7 @@ PantallaSegmentos pantalla(true,(int*)pines_segmentos,(unsigned char)array_size(
 
 void setup() {
   //lecturas de prueba
-  #ifdef EMULADOR_SENSOR_AZAR
+  #if defined(EMULADOR_SENSOR_AZAR) or defined(RANDOM_INTERVAL)
         randomSeed(analogRead(A0));
   #endif
   //configura pines de pantalla como output
@@ -47,7 +48,13 @@ void setup() {
 }
 
 unsigned int lectura = 0;
-unsigned int obtener_pulso(int pin);
+unsigned int obtener_pulso(int pin) {
+    #ifdef RANDOM_INTERVAL
+    unsigned int micros = random(500, 2000);
+    delay(micros);
+    return micros;
+    #endif
+}
 
 void loop() {
     unsigned int nueva_lectura = 0xFF;
@@ -67,9 +74,13 @@ void loop() {
         else {
             return;
         }
-    #elif defined(SIMULAR_REAL)
+    #elif defined(SIMULAR_REAL) or defined(RANDOM_INTERVAL)
         nueva_lectura = obtener_pulso(pin_sensor);
     #endif
+    #if defined(RANDOM_INTERVAL)
+    Serial.write("a");
+    //Serial.write("\r\n");
+    #else
     lectura = nueva_lectura;
     // Actualiza valor mostrado por la pantalla
     pantalla.set_numero(lectura);
@@ -77,8 +88,10 @@ void loop() {
     digitos_string cadena_lectura= pantalla.digitos_a_chars();
     Serial.write(cadena_lectura.cadena);
     Serial.write("\r\n");
+    #endif
 }
 
+/*
 // Retorna la frecuencia cardiaca por minuto
 // dado que el pin análogo esté conectado al sensor
 unsigned int obtener_pulso(int pin) {
@@ -87,7 +100,7 @@ unsigned int obtener_pulso(int pin) {
     // halla tiempo promedio (periodo) entre crestas en decisegundos
     // retorna frecuencia por minuto
     // return periodo/ 1 segundo * 60
-}
+}*/
 
 // Actualiza pantalla cada vez que timer1 alcance TICKS_UPDATE_PANTALLA
 // Cada Tick dura PRESCALER1/16,000,000 segundos
