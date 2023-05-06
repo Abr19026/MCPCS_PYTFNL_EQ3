@@ -48,6 +48,9 @@ class PantallaSegmentos {
     //Define el numero a mostrar cuando se llama mostrar_numero()
     void set_numero(uint32_t numero);
     
+    //Pone caracteres nulos como muestra en la pantalla
+    void set_error();
+
     //Muestra el numero en la pantalla (Máximo 999,999,999)
     //Pines de los segmentos y del digito deben estar en output
     void mostrar_numero();

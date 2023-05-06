@@ -5,8 +5,9 @@
 
 #include "Segmentos.h"
 
-const unsigned char encendidos_numero[] = {0xFC, 0x60, 0xDA, 0xF2, 0x66, 0xB6, 0xBE, 0xE0, 0xFE, 0xF6};
- 
+const unsigned char encendidos_numero[] = {0xFC, 0x60, 0xDA, 0xF2, 0x66, 0xB6, 0xBE, 0xE0, 0xFE, 0xF6, 0x02};
+const unsigned char indice_encendidos_nulo = 10;
+
 //numero máximo 999,999,999 (Si es mayor causa un desborde de memoria)
 //regresa el numero en base decimal (No es imprimible), donde cada digito ocupa un byte
 lista_digitos uint32_a_digitos(uint32_t numero) {
@@ -50,13 +51,26 @@ void PantallaSegmentos::set_numero(uint32_t numero) {
     ultimo_numero = uint32_a_digitos(numero);
 }
 
+//Pone caracteres nulos como muestra en la pantalla
+void PantallaSegmentos::set_error() {
+    for(int i = 0; i <MAXIMOS_DIGITOS; i++) {
+        ultimo_numero.valor[i] = indice_encendidos_nulo;
+    }
+}
+
 //Va a mostrar el número digitado en el campo ultimo_numero
+// Esta función usa delay, y normalmente se usa en una interrupción
+// Esto no es óptimo porque realentiza significativamente al programa
+// La forma de solucionar esto es convertirlo en una corutina
+// que suelta el control al encender el LED
+// y cuando lo retoma sigue con la rutina apagando el led y haciendo lo mismo
+// con el siguiente caracter
 void PantallaSegmentos::mostrar_numero() {
     unsigned char digito_incial = MAXIMOS_DIGITOS - cant_digitos;
     for(unsigned char i=0; i < cant_digitos; i++) {
         escribir_digito(ultimo_numero.valor[digito_incial + i]);
         digitalWrite(pines_digitos[i], valor_apagado);
-        delay(1);
+        delayMicroseconds(50);
         digitalWrite(pines_digitos[i], valor_encendido);
     }
 }
