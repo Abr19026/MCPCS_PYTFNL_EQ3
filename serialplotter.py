@@ -79,7 +79,7 @@ def main():
     s.readSerialStart()                                               # starts background thread
 
     # plotting starts below
-    pltInterval = 100    # Period at which the plot animation updates [ms]
+    pltInterval = 32    # Period at which the plot animation updates [ms]
     xmin = 0
     xmax = maxPlotLength
     ymin = -(1)
