@@ -4,8 +4,10 @@
 
 #define array_size(array) (sizeof(array)/sizeof((array)[0]))
 
-// Permite ver resultados por lector serial
-#define PRUEBA_SERIAL
+// Determina que cosas se envían por Serial (Bluetooth)
+//#define PRUEBA_SERIAL_PULSO //Envía una 'a' cada pulso
+#define PRUEBA_SERIAL_FRECUENCIA //Envía la frecuencia (en texto) cada actualización
+//#define PRUEBA_SERIAL_MSG_ERROR   //Envía la palabra "error" en vez de 0 cuando no hay pulso
 
 // Configuración para refresh de pantalla 7 segmentos
 #define PRESCALER1 1024
@@ -35,8 +37,10 @@ PantallaSegmentos pantalla(
 // Callback al final de cada pulso
 void inicio_pulso() {
     digitalWrite(pin_led, HIGH);
+    #ifdef PRUEBA_SERIAL_PULSO
     // Manda aviso por bluetooth
     Serial.write("a\r\n");
+    #endif
 }
 // Callback al inicio de cada pulso
 void fin_pulso() {
@@ -72,7 +76,7 @@ void loop() {
     if (nueva_lectura != -1) {
         // Actualiza valor mostrado por la pantalla
         pantalla.set_numero(nueva_lectura);
-        #ifdef PRUEBA_SERIAL
+        #ifdef PRUEBA_SERIAL_FRECUENCIA
         Serial.println(nueva_lectura);
         #endif
         /*
@@ -83,8 +87,10 @@ void loop() {
         */
     } else {
         pantalla.set_error();
-        #ifdef PRUEBA_SERIAL
+        #if defined(PRUEBA_SERIAL_MSG_ERROR)
         Serial.write("error\r\n");
+        #elif defined(PRUEBA_SERIAL_FRECUENCIA)
+        Serial.write("0\r\n");
         #endif
     }
 }
