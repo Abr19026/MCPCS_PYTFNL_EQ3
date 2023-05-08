@@ -2,7 +2,7 @@
 #include <Segmentos.h>
 
 //Segmentos A, B, C, D, E, F, G
-int pin_segmentos[] = {12, 11, 10, 9, 8, 7, 6};
+int pin_segmentos[] = {11, 10, 9, 8, 7, 6, 5};
 //dígitos de izquierda a derecha
 int pin_digitos[] = {4, 3, 2};
 

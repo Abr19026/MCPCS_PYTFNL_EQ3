@@ -17,8 +17,10 @@
     __NOTA 1__: Probablemente tendras que configurar el puerto conectado al arduino, en el archivo **Makefile** cambiar el valor de la variable SERIAL_PORT al que esté conectado a tu arduino  
 
     __NOTA 2__: Para cambiar el Sketch a compilar, cambiar el valor de la variable SKETCH en **Makefile** 
-    a la dirección de la carpeta que tiene al sketch .ino dentro, por ejemplo, si quiero compilar PruebaSegmentos, cambiaría sketch así:  
-    `SKETCH ?= Pruebas_Modulos/PruebaSegmentos`
+    al nombre de la carpeta que tiene al sketch .ino dentro, además, el .ino debe tener el nombre de la carpeta. Además, si la carpeta no está en el mismo directorio que el Makefile, DIR_SKETCH será la dirección relativa de la carpeta donde está la carpeta que tiene al .ino dentro.  
+    Ej. Si quieres compilar PruebaSegmentos:  
+        `DIR_SKETCH ?= Pruebas_Modulos/`  
+        `SKETCH ?= PruebaSegmentos`
 
     Si no quieres instalar Make, seguir las siguientes instrucciones
 3. Para compilar se necesita abrir una terminal en esta carpeta y escribir:  
